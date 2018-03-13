@@ -1,5 +1,8 @@
 import argparse
-from configparser import ConfigParser
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
 
 from swisscom_ai.research_keyphrase.embeddings.emb_distrib_local import EmbeddingDistributorLocal
 from swisscom_ai.research_keyphrase.model.input_representation import InputTextObj

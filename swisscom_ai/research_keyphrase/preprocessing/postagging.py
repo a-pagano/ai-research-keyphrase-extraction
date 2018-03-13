@@ -1,13 +1,13 @@
 # Copyright (c) 2017-present, Swisscom (Schweiz) AG.
 # All rights reserved.
 #
-#Authors: Kamil Bennani-Smires, Yann Savary
+# Authors: Kamil Bennani-Smires, Yann Savary
 
 import argparse
 import os
 import re
 import warnings
-from abc import ABC, abstractmethod
+from six import with_metaclass
 
 # NLTK imports
 import nltk
@@ -16,12 +16,12 @@ from nltk.tag.util import tuple2str
 import swisscom_ai.research_keyphrase.preprocessing.custom_stanford as custom_stanford
 from swisscom_ai.research_keyphrase.util.fileIO import read_file, write_string
 
+
 # If you want to use spacy , install it and uncomment the following import
 # import spacy
 
+class PosTagging(object):
 
-class PosTagging(ABC):
-    @abstractmethod
     def pos_tag_raw_text(self, text, as_tuple_list=True):
         """
         Tokenize and POS tag a string
@@ -109,7 +109,7 @@ class PosTagging(ABC):
                 warnings.warn('file ' + output_file_path + 'does not exists')
 
 
-class PosTaggingStanford(PosTagging):
+class PosTaggingStanford(with_metaclass(type, PosTagging)):
     """
     Concrete class of PosTagging using StanfordPOSTokenizer and StanfordPOSTagger
 

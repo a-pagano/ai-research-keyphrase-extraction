@@ -6,13 +6,15 @@
 import os
 import pty
 import subprocess
+from six import with_metaclass
+
 
 import numpy as np
 
-from swisscom_ai.research_keyphrase.embeddings.emb_distrib_interface import EmbeddingDistributor
+from swisscom_ai.research_keyphrase.embeddings.emb_distrib_interface import EmbeddingDistributor, Singleton
 
 
-class EmbeddingDistributorLocal(EmbeddingDistributor):
+class EmbeddingDistributorLocal(with_metaclass(Singleton, EmbeddingDistributor)):
     """
     Concrete class of @EmbeddingDistributor using a local installation of sent2vec
     https://github.com/epfml/sent2vec

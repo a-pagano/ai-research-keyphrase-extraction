@@ -1,9 +1,7 @@
 # Copyright (c) 2017-present, Swisscom (Schweiz) AG.
 # All rights reserved.
 #
-#Authors: Kamil Bennani-Smires, Yann Savary
-
-from abc import ABC, abstractmethod
+# Authors: Kamil Bennani-Smires, Yann Savary
 
 
 class Singleton(type):
@@ -15,11 +13,11 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class EmbeddingDistributor(ABC):
+class EmbeddingDistributor(object):
     """
     Abstract class in charge of providing the embeddings of piece of texts
     """
-    @abstractmethod
+
     def get_tokenized_sents_embeddings(self, sents):
         """
         Generate a numpy ndarray with the embedding of each element of sent in each row
