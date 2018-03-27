@@ -27,8 +27,6 @@ nltk.download('punkt')
         * set jar_path to your_stanford_path/stanford-postagger.jar
         * set model_directory_path to your_stanford_path/models
     * For [SENT2VEC]:
-        * set bin_path to the executable
-        your_sent2vec_path/sent2vec/fasttext
         * set your model_path to the pretrained model
         your_path_to_model/wiki_bigrams.bin (if you choosed wiki_bigrams.bin)
     * rename config.ini.template to config.ini

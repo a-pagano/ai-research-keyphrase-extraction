@@ -7,6 +7,7 @@ import os
 import pty
 import subprocess
 from six import with_metaclass
+import sent2vec
 
 
 import numpy as np
@@ -23,12 +24,9 @@ class EmbeddingDistributorLocal(with_metaclass(Singleton, EmbeddingDistributor))
     This is temporary, we are waiting for the new version of the FastText Python Wrapper for a cleaner implementation.
     """
 
-    def __init__(self, fasttext_path, fasttext_model):
-        master, slave = pty.openpty()
-        self._proc = subprocess.Popen(fasttext_path+' print-sentence-vectors '+fasttext_model, shell=True,
-                                      stdin=subprocess.PIPE, stdout=slave, bufsize=1)
-        self._stdin_handle = self._proc.stdin
-        self._stdout_handle = os.fdopen(master)
+    def __init__(self, fasttext_model):
+        self.model = sent2vec.Sent2vecModel()
+        self.model.load_model(fasttext_model)
 
     def get_tokenized_sents_embeddings(self, sents):
         """
@@ -37,12 +35,4 @@ class EmbeddingDistributorLocal(with_metaclass(Singleton, EmbeddingDistributor))
         for sent in sents:
             if '\n' in sent:
                 raise RuntimeError('New line is not allowed inside a sentence')
-
-        sentence_lines = '\n'.join(sents)+'\n'
-        self._stdin_handle.write(sentence_lines.encode())
-        self._stdin_handle.flush()
-        all_embeddings = []
-        for _ in sents:
-            res = self._stdout_handle.readline()[:-2]  # remove last space and jumpline
-            all_embeddings.append(eval('[' + res.replace(' ', ',') + ']'))
-        return np.array(all_embeddings)
+        return self.model.embed_sentences(sents)
